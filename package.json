@@ -1,0 +1,23 @@
+{
+  "name": "a-part-of-me",
+  "version": "1.0.0",
+  "description": "Code for \"Ask Something\" exhibition piece at ACUD Berlin - 23rd February",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotKokott/APartOfMe.git"
+  },
+  "author": "Christian Kokott",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dotKokott/APartOfMe/issues"
+  },
+  "homepage": "https://github.com/dotKokott/APartOfMe#readme",
+  "dependencies": {
+    "johnny-five": "^0.10.6",
+    "serialport": "^4.0.7"
+  }
+}
