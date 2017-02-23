@@ -34,7 +34,6 @@ board.on('ready', function() {
     });
 
     printbtn.on("press", function() {
-      io.emit("printbtn", true);
       var path = "C:\\Users\\Christian\\Dropbox\\Screenshots\\"
       watcher = fs.watch('C:\\Users\\Christian\\Dropbox\\Screenshots', (eventType, filename) => {
         if (filename) {

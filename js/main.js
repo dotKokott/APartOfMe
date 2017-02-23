@@ -115,6 +115,7 @@ function fitPageScroll() {
 
 $( document ).ready(function() {
     fitPageScroll();
+    textoverlay.fadeTo('slow', 0.7);
 });
 
  $(document).keydown(function(evt) {
@@ -139,7 +140,8 @@ socket.on('knob', function(msg) {
     var split = msg.split(":");
     var comp = parseInt(split[0]) + 3;
     var val = parseInt(split[1]);
-
+    if(comp == 14) comp = 17;
+    
     var eig = Math.sqrt(pModel.shapeModel.eigenValues[comp+2])*3;
 
     var min = -4 * eig;
