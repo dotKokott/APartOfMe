@@ -67,6 +67,8 @@ if (navigator.getUserMedia) {
           videocanvas.width = vid.width;
           videocanvas.height = vid.height;
 
+          var videocontext = videocanvas.getContext('2d');
+
           var mouth_vertices = [
             [44,45,61,44],
             [45,46,61,45],
@@ -160,7 +162,10 @@ if (navigator.getUserMedia) {
                   startStory(); //TODO make this smarter
                   drawMaskLoop();
               } else {
-                  requestAnimFrame(drawGridLoop);
+                  setTimeout(function() {
+                      requestAnimationFrame(drawGridLoop);
+
+                  }, 1000 / 30);
               }
 
               tick();
@@ -168,7 +173,7 @@ if (navigator.getUserMedia) {
 
           function drawMaskLoop() {
               faceIn = true;
-              videocanvas.getContext('2d').drawImage(vid,0,0,videocanvas.width,videocanvas.height);
+              videocontext.drawImage(vid,0,0,videocanvas.width,videocanvas.height);
 
               var pos = ctrack.getCurrentPosition(vid);
 
@@ -207,9 +212,15 @@ if (navigator.getUserMedia) {
                   // draw mask on top of face
                   fd.draw(newPos);
               }
-              animationRequest = requestAnimFrame(drawMaskLoop);
-
               tick();
+              setTimeout(function() {
+                  requestAnimationFrame(drawMaskLoop);
+
+              }, 1000 / 30);
+
+              //animationRequest = requestAnimFrame(drawMaskLoop);
+
+
           }
 
           var pnums = pModel.shapeModel.eigenValues.length-2;

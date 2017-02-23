@@ -6,11 +6,15 @@ var io = require('socket.io')(http);
 
 var five = require('johnny-five');
 var board = new five.Board();
+var robot = require("robotjs");
+
+var exec = require('child_process').exec;
+const fs = require('fs');
 
 const KNOB_COUNT = 15;
 
 var voltages = [];
-
+var watcher;
 board.on('ready', function() {
     for(var i = 0; i < KNOB_COUNT; i++) {
         voltages.push(0);
@@ -31,6 +35,21 @@ board.on('ready', function() {
 
     printbtn.on("press", function() {
       io.emit("printbtn", true);
+      var path = "C:\\Users\\Christian\\Dropbox\\Screenshots\\"
+      watcher = fs.watch('C:\\Users\\Christian\\Dropbox\\Screenshots', (eventType, filename) => {
+        if (filename) {
+
+            exec("rundll32    shimgvw.dll    ImageView_PrintTo /pt   \"" + path + filename +   "\" \"XP-225 Series(Network)");
+
+            watcher.close();
+        }
+          console.log(filename);
+          // Prints: <Buffer ...>
+      });
+
+      robot.keyToggle("alt", "down");
+      robot.keyTap("printscreen");
+      robot.keyToggle("alt", "up");
     });
 
     var restartbtn = new five.Button({
