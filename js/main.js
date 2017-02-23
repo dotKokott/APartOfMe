@@ -36,12 +36,14 @@ var message2 = $('#message2');
 var message3 = $('#message3');
 var message4 = $('#message4');
 var message5 = $('#message5');
+var message6 = $('#message6');
 
 message1.hide();
 message2.hide();
 message3.hide();
 message4.hide();
 message5.hide();
+message6.hide();
 
 var textDelay = 1000;
 var fadeTime = 500;
@@ -58,6 +60,7 @@ function startIntro() {
 }
 
 var storyStarted = false;
+var storyEnded = false;
 function startStory() {
     if(storyStarted) return;
 
@@ -83,7 +86,10 @@ function startStory() {
                                                     $('#object').delay(2000).fadeOut(function(){
                                                         $(this).html("<i><b>you's</b><i>").fadeIn(function() {
                                                             message4.delay(2000).fadeOut(function() {
-                                                                message5.delay(textDelay).fadeIn(fadeTime).delay(2000).fadeOut(fadeTime);
+                                                                message5.delay(textDelay).fadeIn(fadeTime).delay(2000).fadeOut(fadeTime, function() {
+                                                                    storyEnded = true;
+                                                                    message6.delay(10000).fadeIn(fadeTime).delay(4000).fadeOut(fadeTime);
+                                                                });
                                                             })
                                                         })
                                                     })
@@ -127,31 +133,17 @@ $( document ).ready(function() {
      }
  })
 
-
-/*
-var words = [
-    'happy',
-    'sad',
-    'bored',
-    ], i = 0;
-
-    setInterval(function(){
-        $('#emotion').fadeOut(function(){
-            $(this).html(words[i=(i+1)%words.length]).fadeIn();
-        });
-    }, 2000);
-*/
-
-
 socket.on('knob', function(msg) {
+    if(!storyEnded) return;
+
     var split = msg.split(":");
     var comp = parseInt(split[0]) + 3;
     var val = parseInt(split[1]);
 
     var eig = Math.sqrt(pModel.shapeModel.eigenValues[comp+2])*3;
 
-    var min = -5 * eig;
-    var max = 5 * eig;
+    var min = -4 * eig;
+    var max = 4 * eig;
 
     var value = map_range(val, 0, 1023, min, max);
 

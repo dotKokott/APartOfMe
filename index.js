@@ -9,7 +9,12 @@ var board = new five.Board();
 
 const KNOB_COUNT = 15;
 
+var voltages = [];
+
 board.on('ready', function() {
+    for(var i = 0; i < KNOB_COUNT; i++) {
+        voltages.push(0);
+    }
     var startbtn = new five.Button({
         pin: 2,
         isPullup: true
@@ -40,9 +45,12 @@ board.on('ready', function() {
   for(var i = 0; i < KNOB_COUNT; i++) {
 
     (function(board, e) {
-        //board.pinMode(e, five.Pin.ANALOG);
         board.analogRead(e, function(voltage) {
-          io.emit('knob', e + ':' + voltage);
+            var dif = Math.abs(voltages[e] - voltage);
+            if(dif > 5) {
+                voltages[e] = voltage;
+                io.emit('knob', e + ':' + voltage);
+            }
         });
     })(this, i);
   }
