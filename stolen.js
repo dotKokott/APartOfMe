@@ -8,34 +8,10 @@
 				/*********** Setup of video/webcam and checking for webGL support *********/
 
 				var videoReady = false;
-				var imagesReady = false;
-
-				function enablestart() {
-					if (videoReady && imagesReady) {
-						var startbutton = document.getElementById('startbutton');
-						startbutton.value = "start";
-						startbutton.disabled = null;
-					}
-				}
 
 				$(window).load(function() {
-    				imagesReady = true;
     				enablestart();
 				});
-
-				var insertAltVideo = function(video) {
-					if (supports_video()) {
-						if (supports_ogg_theora_video()) {
-							video.src = "../media/cap13_edit2.ogv";
-						} else if (supports_h264_baseline_video()) {
-							video.src = "../media/cap13_edit2.mp4";
-						} else {
-							return false;
-						}
-						//video.play();
-						return true;
-					} else return false;
-				}
 
 				// check whether browser supports webGL
 				var webGLContext;
@@ -74,15 +50,13 @@
 						}
 						vid.play();
 					}, function() {
-						insertAltVideo(vid);
-						alert("There was some problem trying to fetch video from your webcam, using a fallback video instead.");
+						alert("There was some problem trying to fetch video from your webcam, restart please");
 					});
 				} else {
-					insertAltVideo(vid);
 					alert("Your browser does not seem to support getUserMedia, using a fallback video instead.");
 				}
 
-				vid.addEventListener('canplay', function() {videoReady = true;enablestart();}, false);
+				vid.addEventListener('canplay', function() {videoReady = true;}, false);
 
 				/*********** Code for face substitution *********/
 
